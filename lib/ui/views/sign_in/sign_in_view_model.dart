@@ -5,7 +5,6 @@ import '../../../app/app.locator.dart';
 import '../../../app/app.logger.dart';
 import '../../../app/app.router.dart';
 import '../../../app/core/custom_base_view_model.dart';
-import '../../../main.dart';
 import '../../../services/auth_service.dart';
 
 class SignInViewModel extends CustomBaseViewModel {
@@ -31,8 +30,6 @@ class SignInViewModel extends CustomBaseViewModel {
     log.d("response: $response");
 
     if (!response.error) {
-      await syncAllData();
-
       navigationService.clearStackAndShow(Routes.homeView);
 
       return;

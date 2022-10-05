@@ -25,7 +25,7 @@ class SignInView extends StatelessWidget {
             child: Form(
               key: model.formKey,
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(50.0),
+                padding: const EdgeInsets.all(32.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -46,7 +46,8 @@ class CustomCardTimeline extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: regularTextStyle.copyWith(
+                      style: boldTextStyle.copyWith(
+                        fontSize: 16,
                         color: textColor,
                       ),
                     ),
@@ -61,9 +62,8 @@ class CustomCardTimeline extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         description ?? '',
-                        style: boldTextStyle.copyWith(
+                        style: mediumTextStyle.copyWith(
                           color: textColor,
-                          decoration: TextDecoration.underline,
                         ),
                       )
                     ],
@@ -72,7 +72,7 @@ class CustomCardTimeline extends StatelessWidget {
                       children: [
                         CustomChip(
                           text: status,
-                          color: color,
+                          color: textColor,
                           maxWidth: 300,
                         ),
                       ],

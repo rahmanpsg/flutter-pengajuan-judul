@@ -13,12 +13,18 @@ dependencies:
   collection: ^1.16.0
   cupertino_icons: ^1.0.2
   dio: ^4.0.6
+  file_picker: ^5.2.0+1
   firebase_core: ^1.24.0
   firebase_storage: ^10.3.10
   flutter:
     sdk: flutter
+  flutter_hooks: ^0.18.5+1
+  flutter_secure_storage: ^6.0.0
+  flutter_svg: ^1.1.5
   intl: ^0.17.0
+  shimmer: ^2.0.0
   stacked: ^3.0.0
+  stacked_hooks: ^0.2.2
   stacked_services: ^0.9.5
   unicons: ^2.1.0
   uuid: ^3.0.6

@@ -1,13 +1,34 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pengajual_judul/app/app.logger.dart';
 import 'package:pengajual_judul/models/mahasiswa_model.dart';
+import 'package:pengajual_judul/services/secure_storage_service.dart';
+import 'package:stacked/stacked.dart';
 
+import '../app/app.locator.dart';
 import '../models/api_response_model.dart';
 
-class AuthService {
+class AuthService with ReactiveServiceMixin {
+  AuthService() {
+    listenToReactiveValues([_mahasiswa]);
+  }
   final log = getLogger('AuthService');
 
-  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+  final _firebaseFirestore = FirebaseFirestore.instance;
+  final _secureStorage = locator<SecureStorageService>();
+
+  final ReactiveValue<MahasiswaModel?> _mahasiswa =
+      ReactiveValue<MahasiswaModel?>(null);
+
+  Future<void> syncData() async {
+    final user = await _secureStorage.read(key: 'user');
+
+    _mahasiswa.value =
+        user != null ? MahasiswaModel.fromJson(jsonDecode(user)) : null;
+
+    log.d("mahasiswa: ${_mahasiswa.value}");
+  }
 
   Future<ApiResponseModel<MahasiswaModel>> login({
     required String nim,
@@ -33,6 +54,10 @@ class AuthService {
         return ApiResponseModel.error(message: 'Password salah');
       }
 
+      _mahasiswa.value = mahasiswa;
+
+      _secureStorage.write(key: 'user', value: jsonEncode(mahasiswa.toJson()));
+
       return ApiResponseModel.success(data: mahasiswa);
     } on FirebaseException catch (e) {
       log.e(e);
@@ -48,11 +73,10 @@ class AuthService {
   }
 
   Future logout() async {
-    throw false;
-    // try {
-    //   await _firebaseAuth.signOut();
-    // } catch (e) {
-    //   log.e(e);
-    // }
+    _mahasiswa.value = null;
+    _secureStorage.clear();
   }
+
+  bool get isLoggedIn => mahasiswa != null;
+  MahasiswaModel? get mahasiswa => _mahasiswa.value;
 }

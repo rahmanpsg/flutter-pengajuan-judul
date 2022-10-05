@@ -111,6 +111,12 @@ class JudulModel {
           ? greenColor
           : dangerColor;
 
+  Color get statusFontColor => status == null
+      ? fontYellowColor
+      : status == true
+          ? fontGreenColor
+          : fontDangerColor;
+
   String get tanggalFormat => DateFormat('dd/MM/yyyy').format(_createdAt!);
   String get tanggalUploadFormat =>
       DateFormat('EEEE, dd MMMM yyyy hh:mm a').format(_createdAt!);
