@@ -43,7 +43,7 @@ class HomeViewModel extends ReactiveViewModel {
   }
 
   void onDownload() async {
-    // TODO: implement onDownload
+    await _navigationService.navigateToPdfPreviewView();
   }
 
   void onLogout() async {

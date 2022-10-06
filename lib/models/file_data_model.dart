@@ -1,16 +1,14 @@
-import 'dart:typed_data';
-
 class FileDataModel {
   final String name;
   final int bytes;
-  Uint8List? data;
+  String? path;
   String? url;
   String? text;
 
   FileDataModel({
     required this.name,
     required this.bytes,
-    this.data,
+    this.path,
     this.url,
     this.text,
   });
@@ -38,6 +36,6 @@ class FileDataModel {
 
   @override
   String toString() {
-    return 'FileDataModel{name: $name, bytes: $bytes, url: $url}';
+    return 'FileDataModel{name: $name, bytes: $bytes, url: $url, path: $path}';
   }
 }

@@ -10,7 +10,7 @@ class FirebaseStorageApi {
 
   final _firebaseStorage = FirebaseStorage.instance;
 
-  Future<UploadTask?> uploadFile(String path, Uint8List fileData,
+  Future<UploadTask?> uploadFile(String path, String localPath,
       [String? contentType]) async {
     log.d("path : $path");
 
@@ -23,7 +23,7 @@ class FirebaseStorageApi {
       contentType: contentType,
     );
 
-    uploadTask = ref.putFile(File.fromRawPath(fileData), metadata);
+    uploadTask = ref.putFile(File(localPath), metadata);
 
     return Future.value(uploadTask);
   }

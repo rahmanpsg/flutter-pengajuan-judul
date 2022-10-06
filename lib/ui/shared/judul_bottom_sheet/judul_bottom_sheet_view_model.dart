@@ -37,7 +37,7 @@ class JudulBottomSheetViewModel extends CustomBaseViewModel {
     final response = await FilePicker.platform.pickFiles(
       allowMultiple: false,
       type: FileType.custom,
-      allowedExtensions: ['doc', 'docx'],
+      allowedExtensions: ['doc', 'docx', 'pdf'],
     );
 
     log.d("response: $response");
@@ -49,11 +49,10 @@ class JudulBottomSheetViewModel extends CustomBaseViewModel {
     fileData = FileDataModel(
       name: file.name,
       bytes: file.size,
-      data: file.bytes,
+      path: file.path,
     );
 
     log.d(fileData);
-    log.d("data: ${fileData?.data}");
 
     controller.text = "${fileData?.name} (${fileData?.size})";
   }
@@ -66,9 +65,8 @@ class JudulBottomSheetViewModel extends CustomBaseViewModel {
     try {
       final response = await _judulService.deteksi(judul);
 
-      setBusy(false);
-
       if (response.any((x) => x.persentase > 70)) {
+        setBusy(false);
         await dialogService.showCustomDialog(
           variant: DialogType.alertDialogView,
           data: AlertDialogData(type: AlertDialogType.warning),
@@ -78,68 +76,54 @@ class JudulBottomSheetViewModel extends CustomBaseViewModel {
         );
         return;
       }
-    } catch (e) {
-      log.d(e);
-    }
 
-    if (fileData != null) {
+      if (fileData == null) return;
+
       final uploadTask = await _firebaseStorage.uploadFile(
         "juduls/${judul.id}_${fileData?.name}",
-        fileData!.data!,
+        fileData!.path!,
       );
 
       if (uploadTask == null) return;
 
       log.d("Uploading file...");
 
-      uploadTask.then((ts) async {
-        log.d("Uploading file success");
+      final ts = await uploadTask;
 
-        final url = await ts.ref.getDownloadURL();
+      final url = await ts.ref.getDownloadURL();
 
-        log.i(url);
+      log.i(url);
 
-        fileData?.url = url;
+      fileData?.url = url;
 
-        judul.fileData = fileData;
-      }).catchError((e) {
-        log.e(e);
+      judul.fileData = fileData;
 
-        dialogService.showDialog(
-          title: 'Informasi',
-          description: 'Terjadi masalah, silahkan coba kembali!',
-          dialogPlatform: DialogPlatform.Material,
-        );
-      }).whenComplete(() {
-        completer(
-          SheetResponse(
-            confirmed: true,
-            data: judul,
-          ),
-        );
+      await _judulService.save(judul);
 
-        setBusy(false);
-      });
-      return;
+      setBusy(false);
+
+      completer(
+        SheetResponse(
+          confirmed: true,
+          data: judul,
+        ),
+      );
+
+      await dialogService.showCustomDialog(
+        variant: DialogType.alertDialogView,
+        data: AlertDialogData(type: AlertDialogType.success),
+        title: 'Informasi',
+        description:
+            'Judul berhasil diajukan, silahkan tunggu konfirmasi dari admin.',
+      );
+    } catch (e) {
+      log.d(e);
+      dialogService.showCustomDialog(
+        variant: DialogType.alertDialogView,
+        data: AlertDialogData(type: AlertDialogType.warning),
+        title: 'Informasi',
+        description: 'Terjadi masalah, silahkan coba kembali!',
+      );
     }
-
-    await _judulService.save(judul);
-
-    setBusy(false);
-
-    completer(
-      SheetResponse(
-        confirmed: true,
-        data: judul,
-      ),
-    );
-
-    await dialogService.showCustomDialog(
-      variant: DialogType.alertDialogView,
-      data: AlertDialogData(type: AlertDialogType.success),
-      title: 'Informasi',
-      description:
-          'Judul berhasil diajukan, silahkan tunggu konfirmasi dari admin.',
-    );
   }
 }

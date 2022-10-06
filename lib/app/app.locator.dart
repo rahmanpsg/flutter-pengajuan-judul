@@ -13,6 +13,7 @@ import 'package:stacked_services/src/navigation/navigation_service.dart';
 import 'package:stacked_services/src/snackbar/snackbar_service.dart';
 
 import '../services/auth_service.dart';
+import '../services/dosen_service.dart';
 import '../services/judul_service.dart';
 import '../services/secure_storage_service.dart';
 
@@ -32,4 +33,5 @@ Future<void> setupLocator(
   locator.registerLazySingleton(() => SecureStorageService());
   locator.registerLazySingleton(() => AuthService());
   locator.registerLazySingleton(() => JudulService());
+  locator.registerLazySingleton(() => DosenService());
 }

@@ -78,6 +78,7 @@ class HomeView extends StatelessWidget {
                             return CustomCardTimeline(
                               title: judul.judul ?? '',
                               subtitle: judul.tanggalUploadFormat,
+                              fileData: judul.fileData,
                               description: judul.koreksi,
                               status: judul.statusString,
                               color: judul.statusColor,

@@ -108,7 +108,7 @@ class HomeCardHeader extends StatelessWidget {
                         onPressed: onDownload,
                         icon: const Icon(UniconsLine.file_download_alt),
                         label: const Text(
-                            'Unduh Formulir Pernyataan Calon Dosen Pembimbing'),
+                            'Formulir Pernyataan Calon Dosen Pembimbing'),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.white,
                           disabledForegroundColor: Colors.white54,

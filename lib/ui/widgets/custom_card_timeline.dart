@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pengajual_judul/app/themes/app_colors.dart';
+import 'package:pengajual_judul/models/file_data_model.dart';
+import 'package:unicons/unicons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../app/themes/app_text.dart';
 import 'custom_chip.dart';
@@ -7,6 +10,7 @@ import 'custom_chip.dart';
 class CustomCardTimeline extends StatelessWidget {
   final String title;
   final String subtitle;
+  final FileDataModel? fileData;
   final String? description;
   final String status;
   final Color color;
@@ -17,6 +21,7 @@ class CustomCardTimeline extends StatelessWidget {
     super.key,
     required this.title,
     required this.subtitle,
+    this.fileData,
     this.description,
     required this.status,
     required this.color,
@@ -44,20 +49,50 @@ class CustomCardTimeline extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title,
-                      style: boldTextStyle.copyWith(
-                        fontSize: 16,
-                        color: textColor,
-                      ),
+                    Row(
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              title,
+                              style: boldTextStyle.copyWith(
+                                fontSize: 16,
+                                color: textColor,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              subtitle,
+                              style: regularTextStyle.copyWith(
+                                color: textColor.withOpacity(.6),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Spacer(),
+                        if (fileData?.url != null)
+                          CircleAvatar(
+                            backgroundColor: color.withOpacity(.8),
+                            child: IconButton(
+                              onPressed: () async {
+                                try {
+                                  await launchUrl(Uri.parse(fileData!.url!),
+                                      mode: LaunchMode.externalApplication);
+                                } catch (e) {
+                                  print(e);
+                                }
+                              },
+                              icon: const Icon(
+                                UniconsLine.file_download,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                      ],
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      subtitle,
-                      style: regularTextStyle.copyWith(
-                        color: textColor.withOpacity(.6),
-                      ),
-                    ),
+
                     if (description != null) ...[
                       const SizedBox(height: 8),
                       Text(
@@ -76,7 +111,36 @@ class CustomCardTimeline extends StatelessWidget {
                           maxWidth: 300,
                         ),
                       ],
-                    )
+                    ),
+                    // ...[
+                    //   const SizedBox(height: 8),
+                    //   ListTile(
+                    //     onTap: () {},
+                    //     dense: true,
+                    //     minLeadingWidth: 0,
+                    //     shape: RoundedRectangleBorder(
+                    //       side: BorderSide(color: textColor.withOpacity(.6)),
+                    //       borderRadius: BorderRadius.circular(6),
+                    //     ),
+                    //     leading: SvgPicture.asset(
+                    //       'assets/svg/doc.svg',
+                    //       width: 30,
+                    //     ),
+                    //     title: Text(
+                    //       fileData?.name ??
+                    //           'asasajsajs asdasdad  sdd dsds .pdf',
+                    //       style: regularTextStyle.copyWith(
+                    //         color: textColor,
+                    //       ),
+                    //     ),
+                    //     subtitle: Text(
+                    //       fileData?.size ?? '343.2 KB',
+                    //       style: regularTextStyle.copyWith(
+                    //         color: textColor.withOpacity(.6),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ],
                   ],
                 ),
               ),

@@ -39,9 +39,12 @@ class JudulBottomSheetView extends StatelessWidget {
             right: 16,
             bottom: 16,
           ),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15),
+              topRight: Radius.circular(15),
+            ),
           ),
           child: const _HookForm(),
         );
@@ -109,8 +112,8 @@ class _HookForm extends HookViewModelWidget<JudulBottomSheetViewModel> {
             hintText: 'File pengajuan judul skripsi',
             readOnly: true,
             textInputAction: TextInputAction.next,
-            // validator: (val) => Validator.validateEmpty(
-            //     value: val, errorMessage: 'Silahkan pilih file pengajuan'),
+            validator: (val) => Validator.validateEmpty(
+                value: val, errorMessage: 'Silahkan pilih file pengajuan'),
           ),
           const SizedBox(height: 32),
           Flexible(

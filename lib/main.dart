@@ -11,7 +11,6 @@ import 'app/app.router.dart';
 import 'app/themes/app_theme.dart';
 import 'firebase_options.dart';
 import 'services/auth_service.dart';
-import 'services/judul_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
