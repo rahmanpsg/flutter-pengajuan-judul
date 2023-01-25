@@ -12,6 +12,8 @@ class SignInView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey widgetKey = GlobalKey();
+
     return ViewModelBuilder<SignInViewModel>.reactive(
       viewModelBuilder: () => SignInViewModel(),
       builder: (
@@ -45,6 +47,28 @@ class SignInView extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
+                    ListTile(
+                      dense: true,
+                      contentPadding: EdgeInsets.zero,
+                      minVerticalPadding: 0,
+                      minLeadingWidth: 0,
+                      leading: const Icon(Icons.info),
+                      title: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text:
+                                  'Silahkan login menggunakan nim masing-masing dengan password default ',
+                              style: mediumTextStyle.copyWith(fontSize: 12),
+                            ),
+                            TextSpan(
+                              text: '"tld"',
+                              style: boldTextStyle.copyWith(fontSize: 12),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
                     const Divider(),
                     CustomTextFieldOutline(
                       controller: model.nimController,
@@ -76,7 +100,7 @@ class SignInView extends StatelessWidget {
                               child: CircularProgressIndicator(),
                             )
                           : const Text("Masuk"),
-                    )
+                    ),
                   ],
                 ),
               ),
